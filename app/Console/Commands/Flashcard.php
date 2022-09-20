@@ -40,6 +40,9 @@ class Flashcard extends Command
                 case 'Create a flashcard' :
                     $this->create();
                     break;
+                case 'List all flashcards' :
+                    $this->list();
+                    break;
             }
 
 
@@ -55,5 +58,11 @@ class Flashcard extends Command
 
         $flashcard_controller = new FlashcardController();
         $flashcard_controller->createFlashcardByCommand($question, $answer);
+    }
+
+    public function list()
+    {
+        $flashcards = \App\Models\Flashcard::all();
+        foreach ($flashcards as $flashcard) echo $flashcard->question . ' : ' . $flashcard->answer . PHP_EOL;
     }
 }
