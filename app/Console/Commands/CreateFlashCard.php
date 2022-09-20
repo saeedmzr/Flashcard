@@ -28,6 +28,9 @@ class CreateFlashCard extends Command
      */
     public function handle()
     {
-         Artisan::call('flashcard:interactive');
+        $question = $this->ask('What is your question?');
+
+        $answer = $this->ask('What is your answer ?');
+
     }
 }

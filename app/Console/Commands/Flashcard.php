@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\FlashcardController;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -28,21 +29,31 @@ class Flashcard extends Command
      */
     public function handle()
     {
+        while (true) {
+            $option = $this->choice(
+                'Choose your action ',
+                ['Create a flashcard', 'List all flashcards', 'Practice', 'Stats', 'Reset', 'Exit']
+            );
 
-        $option = $this->choice(
-            'Choose your action ',
-            ['Create a flashcard', 'List all flashcards', 'Practice', 'Stats', 'Reset', 'Exit']
-        );
 
-        echo $option ;
-        
+            switch ($option) {
+                case 'Create a flashcard' :
+                    $this->create();
+                    break;
+            }
 
-        switch ($option) {
-            case 'Create a flashcard' :
-                Artisan::call('flashcard:create');
 
         }
 
 
+    }
+
+    public function create()
+    {
+        $question = $this->ask('What is your question?');
+        $answer = $this->ask('What is your answer ?');
+
+        $flashcard_controller = new FlashcardController();
+        $flashcard_controller->createFlashcardByCommand($question, $answer);
     }
 }
