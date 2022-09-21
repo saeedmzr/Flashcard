@@ -13,6 +13,6 @@ class FlashcardController extends Controller
     public function createFlashcardByCommand($question, $answer)
     {
 
-        Flashcard::query()->create(['question' => $question, 'answer' => $answer]);
+        Flashcard::create(['question' => $question, 'answer' => $answer]);
     }
 }

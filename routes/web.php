@@ -15,4 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
+//    $flascard = \App\Models\Flashcard::all();
+    $flashcards = \App\Models\Flashcard::query()->select(['answer'])->get();
+
+    return response()->json($flashcards);
+
 });

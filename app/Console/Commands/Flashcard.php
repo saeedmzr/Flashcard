@@ -3,8 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\FlashcardController;
+use App\Models\Reply;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
+
 
 class Flashcard extends Command
 {
@@ -43,11 +47,36 @@ class Flashcard extends Command
                 case 'List all flashcards' :
                     $this->list();
                     break;
+                case 'Practice':
+                    $this->practice();
+                    break;
             }
 
 
         }
 
+
+    }
+
+    public function practice()
+    {
+        $table = new Table($this->output);
+
+        // Set the table headers.
+        $table->setHeaders([
+            'Question', 'Status'
+        ]);
+
+        // Create a new TableSeparator instance.
+        $separator = new TableSeparator;
+
+        // Set the contents of the table.
+        $flashcards = \App\Models\Flashcard::all();
+        foreach ($flashcards as $flashcard) $table->addRow(['Question' => $flashcard->question, 'Status' => $flashcard->status], $separator);
+        $table->render();
+
+        $question = $this->choice('Wich Question do you want to practice ?'
+            , $flashcards->pluck('question')->toArray());
 
     }
 
@@ -62,7 +91,19 @@ class Flashcard extends Command
 
     public function list()
     {
+        $table = new Table($this->output);
+
+        // Set the table headers.
+        $table->setHeaders([
+            'Question', 'Answer'
+        ]);
+
+        // Create a new TableSeparator instance.
+        $separator = new TableSeparator;
+
+        // Set the contents of the table.
         $flashcards = \App\Models\Flashcard::all();
-        foreach ($flashcards as $flashcard) echo $flashcard->question . ' : ' . $flashcard->answer . PHP_EOL;
+        foreach ($flashcards as $flashcard) $table->addRow(['Question' => $flashcard->question, 'Answer' => $flashcard->answer], $separator);
+        $table->render();
     }
 }

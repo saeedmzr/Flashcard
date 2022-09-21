@@ -10,4 +10,17 @@ class Flashcard extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $appends = ['status'];
+
+    public function reply()
+    {
+        return $this->hasOne(Reply::class);
+    }
+
+    public function getStatusAttribute()
+    {
+        if (!$this->reply) return 'Not answered';
+        elseif ($this->answer == $this->reply->text) return 'Incorrect';
+        else return 'Correct';
+    }
 }
