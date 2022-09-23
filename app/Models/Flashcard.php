@@ -20,7 +20,7 @@ class Flashcard extends Model
     public function getStatusAttribute()
     {
         if (!$this->reply) return 'Not answered';
-        elseif ($this->answer == $this->reply->text) return 'Incorrect';
+        elseif (!$this->reply->is_correct) return 'Incorrect';
         else return 'Correct';
     }
 }
