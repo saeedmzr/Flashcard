@@ -75,6 +75,7 @@ class Flashcard extends Command
     {
 
         $question = '';
+//Practice continue untill we use Stop command
         while ($question != 'Stop') {
             $table = new Table($this->output);
 
@@ -99,15 +100,17 @@ class Flashcard extends Command
 
             $question = $this->choice('Wich Question do you want to practice ?'
                 , $choices);
-
+//Practice continue untill we use Stop command
             if ($question != 'Stop') {
 
                 $flashcard = \App\Models\Flashcard::where('question', $question)->first();
                 if ($flashcard) {
                     if ($flashcard->reply) {
+//if flashcard has already a reply it means that we already answered it.
                         echo 'Your already answered this question.';
                         $this->newLine(2);
                     } else {
+//otherwise enter our answer
                         $answer = $this->ask('Enter Your Answer : ');
                         if ($answer == $flashcard->answer) $is_correct = true;
                         else $is_correct = false;
