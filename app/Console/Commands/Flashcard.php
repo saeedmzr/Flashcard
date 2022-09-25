@@ -88,7 +88,7 @@ class Flashcard extends Command
             $separator = new TableSeparator;
 
             // Set the contents of the table.
-            $flashcards = \App\Models\Flashcard::all();
+            $flashcards = $this->flashcard_repository->all();
             foreach ($flashcards as $flashcard) $table->addRow(['Question' => $flashcard->question, 'Status' => $flashcard->status], $separator);
 
             $table->render();
@@ -128,9 +128,9 @@ class Flashcard extends Command
     public function create()
     {
         $question = $this->ask('What is your question?');
-        $answer = $this->ask('What is your answer ?');
+        $answer = $this->ask('What is your answer?');
 
-        \App\Models\Flashcard::query()->create(['question' => $question, 'answer' => $answer]);
+        $this->flashcard_repository->create(['question' => $question, 'answer' => $answer]);
     }
 
     public function list()
@@ -146,7 +146,7 @@ class Flashcard extends Command
         $separator = new TableSeparator;
 
         // Set the contents of the table.
-        $flashcards = \App\Models\Flashcard::all();
+        $flashcards = $this->flashcard_repository->all();
         foreach ($flashcards as $flashcard) $table->addRow(['Question' => $flashcard->question, 'Answer' => $flashcard->answer], $separator);
         $table->render();
     }
